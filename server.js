@@ -1,32 +1,25 @@
 import express from 'express'
-import { connectDB } from './db.js'
-import { student } from './userModel.js'
+import dotenv from 'dotenv'
+import { connectDB } from './helper/db.js'
+import route from './routes/route.js'
+
+dotenv.config()
+const app = express()
+app.use(express.json())
+const port = 8080
 
 await connectDB()
 
-const email = "mugesh.s@rently.com"
+app.get('/', (req, res) => res.send("<h1>API is Working!</h1>"))
 
-//Data insertion
-const existing = await student.findOne({ where : {email : email}})
-if(existing)
-{
-    console.log("The Email already exists!")
-}
-else
-{
-    await student.create({name : "Mugesh S", age : 21, email : "mugesh.s@rently.com"})
-    console.log("Data inserted Successfully!")
-}
+app.use('/auth', route)
 
-//find
-const result = await student.findAll({raw : true})
-console.log(result)
+app.listen(port, () => console.log("Server is listening in port : ", port))
 
-//delete
-// const del = await student.destroy({where : {email : email}})
-// console.log(del)
+// //delete
 
-//update
-const upd = await student.update({ name : "Mugesh", age : 22 }, { where : {email : "mugesh.s@rently.com"} })
-console.log(upd)
+
+// //update
+// const upd = await student.update({ name : "Mugesh", age : 22 }, { where : {email : "mugesh.s@rently.com"} })
+// console.log(upd)
 
