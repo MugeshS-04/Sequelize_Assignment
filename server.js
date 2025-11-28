@@ -16,10 +16,3 @@ app.use('/auth', route)
 
 app.listen(port, () => console.log("Server is listening in port : ", port))
 
-// //delete
-
-
-// //update
-// const upd = await student.update({ name : "Mugesh", age : 22 }, { where : {email : "mugesh.s@rently.com"} })
-// console.log(upd)
-
