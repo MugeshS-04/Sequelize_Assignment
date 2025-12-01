@@ -1,6 +1,10 @@
-import { student } from "../model/userModel.js"
+const { sequelize } = require('./db.js')
+const { DataTypes } = require('sequelize')
+const studentModel = require("../models/student.js")
 
-export const create_helper = async (req, res) => {
+const student = studentModel(sequelize, DataTypes)
+
+const create_helper = async (req, res) => {
 
     const { name, email, age } = req.body
 
@@ -17,11 +21,11 @@ export const create_helper = async (req, res) => {
     }
 }
 
-export const read_helper = async (req, res) => {
+const read_helper = async (req, res) => {
 
     const { email } = req.body
 
-    const record = await student.findAll({ where : {email : email}}, {raw : true})
+    const record = await student.findAll({ where : {email : email}, raw : true})
 
     if(record)
     {
@@ -33,7 +37,7 @@ export const read_helper = async (req, res) => {
     }
 }
 
-export const update_helper = async (req, res) => {
+const update_helper = async (req, res) => {
 
     const { email, name, age } = req.body
 
@@ -49,7 +53,7 @@ export const update_helper = async (req, res) => {
     }
 }
 
-export const delete_helper = async (req, res) => {
+const delete_helper = async (req, res) => {
 
     const { email } = req.body
 
@@ -63,4 +67,11 @@ export const delete_helper = async (req, res) => {
     {
         res.json({success : true, message : "No records deleted!"})
     }
+}
+
+module.exports = {
+    create_helper,
+    read_helper,
+    delete_helper,
+    update_helper
 }
