@@ -6,7 +6,7 @@ const student = studentModel(sequelize, DataTypes)
 
 const create_helper = async (req, res) => {
 
-    const { name, email, age } = req.body
+    const { name, age, dept, email } = req.body
 
     const existing = await student.findOne({ where : {email : email}})
 
@@ -16,7 +16,7 @@ const create_helper = async (req, res) => {
     }
     else
     {
-        await student.create({ name : name, age : age, email : email })
+        await student.create({ name : name, age : age, dept : dept, email : email })
         const stud = await student.findOne({where : {email : email}})
         return res.json({roll_no : stud.roll_no, success : true, message : "Data inserted Successfully!" })
     }
@@ -30,7 +30,7 @@ const read_helper = async (req, res) => {
 
     if(record)
     {
-        return res.json({ name : record.name, age : record.age, email : record.email })
+        return res.json({ name : record.name, age : record.age, dept : record.dept, email : record.email })
     }
     else
     {
@@ -40,9 +40,9 @@ const read_helper = async (req, res) => {
 
 const update_helper = async (req, res) => {
 
-    const { roll_no, name, email, age } = req.body
+    const { roll_no, name, age, dept, email } = req.body
 
-    const upd = await student.update({ name : name ,age : age, email : email }, { where : {roll_no : roll_no} })
+    const upd = await student.update({ name : name ,age : age, dept: dept, email : email }, { where : {roll_no : roll_no} })
 
     if(upd > 0)
     {
@@ -71,7 +71,7 @@ const delete_helper = async (req, res) => {
 }
 
 const getresult_helper = async (req, res) => {
-    
+
     const { roll_no } = req.body
 
     const result = await student.findOne({where : {roll_no : roll_no}})
@@ -112,11 +112,50 @@ const uploadresult_helper = async (req, res) => {
     }
 }
 
+const allresult_helper = async (req, res) => {
+    
+    const result = await student.findAll({raw : true})
+    const arr = []
+
+    result.forEach(row => {
+        arr.push({
+            roll_no: row.roll_no,
+            name : row.name,
+            dept : row.dept,
+            result: row.result
+        })
+    })
+
+    res.json(arr)
+}
+
+const deptresult_helper = async (req, res) => {
+    
+    const { dept } = req.body
+
+    const result = await student.findAll({where : {dept : dept}})
+
+    const arr = []
+
+    result.forEach(row => {
+        arr.push({
+            roll_no: row.roll_no,
+            name : row.name,
+            dept : row.dept,
+            result: row.result
+        })
+    })
+
+    res.json(arr)
+}
+
 module.exports = {
     create_helper,
     read_helper,
     delete_helper,
     update_helper,
     getresult_helper,
-    uploadresult_helper
+    uploadresult_helper,
+    allresult_helper,
+    deptresult_helper
 }

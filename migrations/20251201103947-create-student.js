@@ -15,6 +15,10 @@ module.exports = {
       age: {
         type: Sequelize.INTEGER
       },
+      dept: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       email: {
         type: Sequelize.STRING
       },

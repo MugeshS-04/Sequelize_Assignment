@@ -1,6 +1,6 @@
 import express from 'express'
 import { upload } from '../helper/file_upload.js'
-import { create_, delete_, read_, update_, getresult_, uploadresult_} from '../controllers/controller.js'
+import { create_, delete_, read_, update_, getresult_, uploadresult_, allresult_, deptresult_} from '../controllers/controller.js'
 
 const router = express.Router()
 
@@ -11,6 +11,8 @@ router.post("/update", update_)
 
 router.post("/uploadresult", upload, uploadresult_)
 router.get("/getresult", getresult_)
+router.get("/allresult", allresult_ )
+router.get("/deptresult", deptresult_)
 
 
 export default router
