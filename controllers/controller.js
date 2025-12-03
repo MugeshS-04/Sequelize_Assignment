@@ -1,4 +1,4 @@
-import { create_helper, update_helper, read_helper, delete_helper, getresult_helper, uploadresult_helper, allresult_helper, deptresult_helper } from "../helper/helper.js"
+import { create_helper, update_helper, read_helper, delete_helper, getresult_helper, uploadresult_helper, allresult_helper, deptresult_helper, deptcount_helper } from "../helper/helper.js"
 
 export const create_ = (req, res) => {
     return create_helper(req, res)
@@ -30,4 +30,8 @@ export const allresult_ = (req, res) => {
 
 export const deptresult_ = (req, res) => {
     return deptresult_helper(req, res)
+}
+
+export const deptcount_ = (req, res) => {
+    return deptcount_helper(req, res)
 }

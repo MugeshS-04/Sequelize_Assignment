@@ -114,7 +114,8 @@ const uploadresult_helper = async (req, res) => {
 
 const allresult_helper = async (req, res) => {
     
-    const result = await student.findAll({raw : true})
+    const result = await student.findAll()
+
     const arr = []
 
     result.forEach(row => {
@@ -126,7 +127,7 @@ const allresult_helper = async (req, res) => {
         })
     })
 
-    res.json(arr)
+    res.json(result)
 }
 
 const deptresult_helper = async (req, res) => {
@@ -149,6 +150,15 @@ const deptresult_helper = async (req, res) => {
     res.json(arr)
 }
 
+const deptcount_helper = async (req, res) => {
+    
+    const { dept } = req.body
+
+    const result = await student.count({where : {dept : dept}})
+
+    res.json({ student_count : result})
+}
+
 module.exports = {
     create_helper,
     read_helper,
@@ -157,5 +167,6 @@ module.exports = {
     getresult_helper,
     uploadresult_helper,
     allresult_helper,
-    deptresult_helper
+    deptresult_helper,
+    deptcount_helper
 }
