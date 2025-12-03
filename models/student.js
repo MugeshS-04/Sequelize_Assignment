@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+
   student.init({
-    id: {
+    roll_no: {
       type : DataTypes.INTEGER,
       primaryKey : true,
       autoIncrement : true,
@@ -23,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     email: { 
       type : DataTypes.STRING,
       unique : true
+    },
+    result: {
+      type : DataTypes.STRING
     }
   }, {
     sequelize,
