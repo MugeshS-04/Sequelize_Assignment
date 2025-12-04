@@ -30,8 +30,3 @@ module.exports = {
     sequelize,
     connectDB
 }
-
-
-
-
-

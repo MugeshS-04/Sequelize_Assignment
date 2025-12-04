@@ -8,8 +8,8 @@ router.post("/create", create_)
 router.post("/delete", delete_)
 router.post("/read", read_)
 router.post("/update", update_)
-
 router.post("/uploadresult", upload, uploadresult_)
+
 router.get("/getresult", getresult_)
 router.get("/allresult", allresult_ )
 router.get("/deptresult", deptresult_)
