@@ -3,6 +3,7 @@ import { upload } from '../helper/file_upload.js'
 import { celebrate, Joi } from 'celebrate'
 import { access_verify, refresh_verify } from '../helper/token.js'
 import { register_, login_, delete_, update_, uploadresult_, verifyemail_, isverified_, refreshtoken_} from '../controllers/controller.js'
+import { email_send } from '../helper/bull.js'
 
 const auth_router = express.Router()
 
@@ -14,7 +15,7 @@ auth_router.post("/register", celebrate({
         email : Joi.string().email().required(),
         password : Joi.string().min(8).required()
     })
-}), register_)
+}), register_, email_send)
 
 auth_router.post("/login", celebrate({
     body : Joi.object({
@@ -25,7 +26,7 @@ auth_router.post("/login", celebrate({
 
 auth_router.post("/deletedetails", access_verify, isverified_, delete_)
 auth_router.post("/updatedetails", access_verify, isverified_, update_)
-auth_router.post("/verify", verifyemail_)
+auth_router.get('/verify/:email', verifyemail_)
 
 auth_router.post("/uploadresult",  upload, uploadresult_)
 auth_router.post("/refresh", refresh_verify, refreshtoken_)

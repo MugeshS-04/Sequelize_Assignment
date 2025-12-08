@@ -8,6 +8,7 @@ import { errors } from 'celebrate'
 dotenv.config()
 const app = express()
 app.use(express.json())
+app.use(express.urlencoded())
 const port = 8080
 
 await connectDB()

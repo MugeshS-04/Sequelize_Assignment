@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 const student = studentModel(sequelize, DataTypes)
 
-const register_helper = async (req, res) => {
+const register_helper = async (req, res, next) => {
 
     const { name, age, dept, email, password } = req.body
 
@@ -20,8 +20,8 @@ const register_helper = async (req, res) => {
     {
         const hashpass = await bcrypt.hash(password, 10)
         await student.create({ name : name, age : age, dept : dept, email : email, password : hashpass })
-        return res.json({success : true, message : "Registration Successfull!, Verfiy your account to receive roll number" })
-
+        next()
+        return res.json({success : true, message : "Registration Successfull!, Verfiy your account using the link received from the email" })
     }
 }
 
@@ -109,28 +109,19 @@ const delete_helper = async (req, res) => {
 
 const getresult_helper = async (req, res) => {
 
-    const { email, password } = req.body
+    const email = req.user.key
 
     const result = await student.findOne({where : {email : email}})
 
     if(result)
     {
-        const isvalid = await bcrypt.compare(password, result.password)
-
-        if(isvalid)
+        if(result.result)
         {
-            if(result.result)
-            {
-                return res.json({result : result.result})
-            }
-            else
-            {
-                return res.json({result_status : "Result not updated!"})
-            }
+            return res.json({result : result.result})
         }
         else
         {
-            return res.json({success : false, message : "The password is incorrect"})
+            return res.json({result_status : "Result not updated!"})
         }
     }
     else
@@ -189,7 +180,7 @@ const deptcount_helper = async (req, res) => {
 
 const verifyemail_helper = async (req, res) => {
 
-    const { email } = req.body
+    const email = req.params.email
 
     const result = await student.findOne({where : {email : email}})
 

@@ -11,8 +11,6 @@ export const access_verify = async (req, res, next) => {
         
         req.user = isvalid
 
-        console.log(req.user)
-
         next()
     }
     catch(error)

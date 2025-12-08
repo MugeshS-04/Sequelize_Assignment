@@ -1,7 +1,7 @@
 import { register_helper, login_helper, update_helper, getdetails_helper, delete_helper, getresult_helper, uploadresult_helper, deptresult_helper, deptcount_helper, verifyemail_helper, isverified_helper, refreshtoken_helper } from "../helper/helper.js"
 
-export const register_ = (req, res) => {
-    return register_helper(req, res)
+export const register_ = (req, res, next) => {
+    return register_helper(req, res, next)
 }
 
 export const login_ = (req, res) => {
