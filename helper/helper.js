@@ -20,8 +20,8 @@ const register_helper = async (req, res, next) => {
     {
         const hashpass = await bcrypt.hash(password, 10)
         await student.create({ name : name, age : age, dept : dept, email : email, password : hashpass })
-        next()
-        return res.json({success : true, message : "Registration Successfull!, Verfiy your account using the link received from the email" })
+        return next()
+        //return res.json({success : true, message : "Registration Successfull!, Verfiy your account using the link received from the email" })
     }
 }
 

@@ -3,7 +3,7 @@ import { upload } from '../helper/file_upload.js'
 import { celebrate, Joi } from 'celebrate'
 import { access_verify, refresh_verify } from '../helper/token.js'
 import { register_, login_, delete_, update_, uploadresult_, verifyemail_, isverified_, refreshtoken_} from '../controllers/controller.js'
-import { email_send } from '../helper/bull.js'
+import { email_send, dead_mail, empty_dead_mail, dailyattendence } from '../helper/bull.js'
 
 const auth_router = express.Router()
 
@@ -30,5 +30,8 @@ auth_router.get('/verify/:email', verifyemail_)
 
 auth_router.post("/uploadresult",  upload, uploadresult_)
 auth_router.post("/refresh", refresh_verify, refreshtoken_)
+auth_router.get("/failedjobs", dead_mail)
+auth_router.get("/emptyqueue", empty_dead_mail)
+auth_router.get("/attendenceupdates", dailyattendence)
 
 export default auth_router

@@ -1,43 +1,46 @@
-import Queue from 'bull'
-import { transporter } from './mail.js'
+import { email_work, dead_email_work, attend_work } from "../bull/bull_config.js";
 
 export const email_send = async (req, res) => {
 
-    const port = process.env.REDIS_PORT
-    const host = process.env.REDIS_HOST
-
     const email = req.body.email
+
+    await email_work.add({email : email}, {attempts : 5, backoff: { type: "exponential", delay: 1000 }, removeOnComplete: true});
+
+    res.json({success : true, message: "Account registered Sucessfully, Verification Email is being sent!"})
+}
+
+export const dead_mail = async (req, res) => {
+
+    const jobs = await dead_email_work.getJobs([
+        "waiting",
+        "active",
+        "delayed",
+        "failed",
+        "completed"
+    ]);
+
+    res.json(jobs);
+}
+
+export const empty_dead_mail = async (req, res) => {
     
-    const email_work = new Queue( 'email_queue' , { redis : { port : port, host : host }})
+    dead_email_work.empty()
 
-    email_work.process( async (job) => {
+    res.json({success : true, message : "The queue is emptied successfully!"});
+}
 
-        console.log("Sending email!!!....." + job.id)
+export const dailyattendence = async (req, res) => {
 
-        let mailOptions = {
-            from: process.env.MAIL_ID,
-            to: job.data.email,
-            subject: 'Registration Confirmation',
-            text: `Registration was Successfull! Now, verify your account by clicking the link below :  http://localhost:8080/auth/verify/${email}`
+    const options = {
+        repeat : {
+            every : 5000
         }
-         
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-                console.log(error);
-                
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        })
+    }
 
-    })
+    const message = "Today, Overall attendence is 23"
 
-    email_work.on('completed', (job, result) => {
-        console.log("job finished!!!")
-    })
-
-    await email_work.add({email : email}, {attempt : 5, removeOnComplete: true, removeOnFail: true });
-
-    res.json({success : true, message: "Email sent Successfuly!"})
+    await attend_work.add({message : message}, options)
+    
+    res.json({success : true, message : "Subscription for daily attendence is successfull!"})
 }
 
