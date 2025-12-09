@@ -1,17 +1,23 @@
+import dotenv from 'dotenv'
 import { email_work, dead_email_work, attend_work } from "./bull_config.js"
 import { transporter } from "../helper/mail.js"
+
+dotenv.config()
+
+console.log(process.env.MAIL_ID)
 
 email_work.process( async (job) => {
 
     console.log("Sending email!!!....." + job.id)
-
+    
     let mailOptions = {
         from: process.env.MAIL_ID,
         to: job.data.email,
         subject: 'Registration Confirmation',
         text: `Registration was Successfull! Now, verify your account by clicking the link below :  http://localhost:8080/auth/verify/${job.data.email}`
     }
-        
+    
+
     const info = await transporter.sendMail(mailOptions)
 
     console.log(info.response)
@@ -50,7 +56,7 @@ email_work.on("failed", async (job, err) => {
         }
         catch(error)
         {
-            console.log("Issue in sending mail, job is waiting!!")
+            console.log(error)
         }
         
     }
