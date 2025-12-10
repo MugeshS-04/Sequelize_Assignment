@@ -26,7 +26,7 @@ email_work.process( async (job) => {
 
 attend_work.process(async (job) => {
 
-    console.log(job.data.data)
+    console.log(job.data.message)
 
 })
 

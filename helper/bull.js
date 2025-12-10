@@ -33,7 +33,7 @@ export const dailyattendence = async (req, res) => {
 
     const options = {
         repeat : {
-            every : 5000
+            cron : "11 12 * * *"
         }
     }
 
