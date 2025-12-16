@@ -1,0 +1,75 @@
+const sinon = require('sinon')
+const chai = require('chai')
+const bcrypt = require('bcrypt')
+
+const expect = chai.expect
+const { student } = require('../../models/index.js')
+const { register_helper } = require('../../helper/helper')
+
+describe("register_helper", async() => {
+
+    afterEach(() => {
+        sinon.restore()
+    })
+
+    it("should return success message as registration successfull!", async () => {
+        
+        const req = {
+            body: {
+                name: "Mugesh",
+                age: 21,
+                dept: "CSE",
+                email: "mugesh.s@rently.com",
+                password: "ABCD1234!"
+            }
+        }
+
+        const res = {
+            json : sinon.stub()
+        }
+
+        const next = sinon.stub()
+
+        sinon.stub(student, "findOne").resolves(null)
+
+        sinon.stub(bcrypt, "hash").resolves("HashPass")
+
+        sinon.stub(student, "create").resolves(true)
+
+        await register_helper(req, res, next)
+
+        expect(next.calledOnce).to.be.true
+    })
+
+    it("should return email already exist!", async () => {
+        
+        const req = {
+            body: {
+                name: "Mugesh",
+                age: 21,
+                dept: "CSE",
+                email: "mugesh.s@rently.com",
+                password: "ABCD1234!"
+            }
+        }
+
+        const res = {
+            json : sinon.stub()
+        }
+
+        const next = sinon.stub()
+
+        sinon.stub(student, "findOne").resolves({email : "mugesh.s@rently.com"})
+
+        await register_helper(req, res, next)
+
+        expect(res.json.calledOnce).to.be.true
+
+        expect(next.called).to.be.false
+
+        expect(res.json.firstCall.args[0]).to.deep.equal({
+            success: false,
+            message: "The Email already exists!"
+        })
+    })
+})

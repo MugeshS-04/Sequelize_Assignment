@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha \"test/**/*.test.js\" --exit",
+    "coverage": "nyc mocha \"test/**/*.test.js\" --exit",
     "createdb": "npx sequelize-cli db:create",
-    "migrate": "npx sequelize-cli db:migrate",
+    "migrate" : "npx sequelize-cli db:migrate",
     "down": "npx sequelize-cli db:migrate:undo",
     "seed": "npx sequelize-cli db:seed:all",
     "start": "nodemon server.js"
