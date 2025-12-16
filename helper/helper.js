@@ -1,10 +1,7 @@
-const { sequelize } = require('../models/db.js')
-const { DataTypes } = require('sequelize')
-const studentModel = require("../models/student.js")
+const { student } = require('../models/index.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const student = studentModel(sequelize, DataTypes)
 
 const register_helper = async (req, res, next) => {
 
@@ -73,7 +70,7 @@ const update_helper = async (req, res) => {
 
     const key = req?.user?.key
 
-    const email = req?.body?.email || key
+    const email = key
 
     const { name, age, dept } = req.body
 
@@ -93,7 +90,7 @@ const delete_helper = async (req, res) => {
 
     const key = req?.user?.key
 
-    const email = req?.body?.email || key
+    const email = key
 
     const del = await student.destroy({where : {email : email}})
     
@@ -103,7 +100,7 @@ const delete_helper = async (req, res) => {
     }
     else 
     {
-        res.json({success : true, message : "No records deleted!"})
+        res.json({success : false, message : "No records deleted!"})
     }
 }
 
@@ -175,7 +172,18 @@ const deptcount_helper = async (req, res) => {
 
     const result = await student.count({where : {dept : dept}})
 
-    res.json({ student_count : result})
+    if(result > 0)
+    {
+        res.json({student_count : result})
+    }
+    else
+    {
+        res.json({
+            success : false,
+            message : "Given department doesn't exist!"
+        })
+    }
+
 }
 
 const verifyemail_helper = async (req, res) => {
@@ -199,10 +207,7 @@ const isverified_helper = async (req, res, next) => {
 
     const key = req?.user?.key
 
-    console.log("key => " + key)
-    console.log("email => "+ req?.body?.email)
-
-    const email = req?.body?.email || key
+    const email = key
 
     const result = await student.findOne({where : {email : email}})
 
