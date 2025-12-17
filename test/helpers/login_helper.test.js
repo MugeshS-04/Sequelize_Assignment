@@ -7,22 +7,40 @@ const { expect } = require('chai')
 
 describe("login_helper", () => {
 
+    before( async () => {
+    
+    const req = {
+        roll_no : 999,
+        name : "ABCD", 
+        age : 21,
+        dept : "QWER", 
+        email : "assdffds@gmail.com",
+        password : "121323wqeq",
+        result : "asdsadadasd",
+        verified : true
+    }
+
+    await student.create(req)
+    })
+
+    after( async () => {
+    await student.destroy({where : {dept : "QWER"}})
+    })
+
     afterEach(() => sinon.restore())
 
     it("should return login successfull!", async () => {
 
         const req = {
             body : {
-                email : "mugesh.s@rently.com",
-                password : "ABCD1234!"
+                email : "assdffds@gmail.com",
+                password : "121323wqeq",
             }
         }
 
         const res = {
             json : sinon.stub()
         }
-        
-        sinon.stub(student, "findOne").resolves({email : "mugesh.s@rently.com", password : "asdasd"})
 
         sinon.stub(bcrypt, "compare").resolves(true)
 
@@ -44,18 +62,14 @@ describe("login_helper", () => {
 
         const req = {
             body : {
-                email : "mugesh.s@rently.com",
-                password : "ABCD1234!"
+                email : "assdffds@gmail.com",
+                password : "fake",
             }
         }
 
         const res = {
             json : sinon.stub()
         }
-        
-        sinon.stub(student, "findOne").resolves({email : "mugesh.s@rently.com"})
-
-        sinon.stub(bcrypt, "compare").resolves(false)
 
         await login_helper(req, res)
         
@@ -71,8 +85,8 @@ describe("login_helper", () => {
 
         const req = {
             body : {
-                email : "mugesh.s@rently.com",
-                password : "ABCD1234!"
+                email : "assdffds@gmail.com",
+                password : "fake",
             }
         }
 

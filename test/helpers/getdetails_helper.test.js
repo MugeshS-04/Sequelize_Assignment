@@ -7,6 +7,25 @@ const expect = chai.expect
 
 describe("getdetails_helper", () => {
 
+  before( async () => {
+
+        const req = {
+            roll_no : 999,
+            name : "ABCD", 
+            age : 21,
+            dept : "QWER", 
+            email : "assdffds@gmail.com", 
+            password : "121323wqeq",
+            result : "asdsadadasd"
+        }
+
+        await student.create(req)
+    })
+
+    after( async () => {
+        await student.destroy({where : {dept : "QWER"}})
+    })
+
   afterEach(() => {
     sinon.restore()
   })
@@ -15,7 +34,7 @@ describe("getdetails_helper", () => {
 
     const req = {
       user: {
-        key: "mugesh.s@rently.com"
+        key: "assdffds@gmail.com"
       }
     }
 
@@ -23,23 +42,16 @@ describe("getdetails_helper", () => {
       json: sinon.stub()
     }
 
-    sinon.stub(student, "findOne").resolves({
-      name: "Mugesh",
-      roll_no: "21CS001",
-      age: 21,
-      dept: "CSE",
-      email: "test@gmail.com"
-    })
-
     await getdetails_helper(req, res)
 
     expect(res.json.calledOnce).to.be.true
+
     expect(res.json.firstCall.args[0]).to.deep.equal({
-      name: "Mugesh",
-      roll_no: "21CS001",
-      age: 21,
-      dept: "CSE",
-      email: "test@gmail.com"
+      name : "ABCD", 
+      roll_no : 999,
+      age : 21,
+      dept : "QWER", 
+      email : "assdffds@gmail.com"
     })
   })
 
@@ -47,7 +59,7 @@ describe("getdetails_helper", () => {
 
     const req = {
       user: {
-        key: "unknown@gmail.com"
+        key: "assdffds@gmail.com"
       }
     }
 

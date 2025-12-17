@@ -7,6 +7,26 @@ const { uploadresult_helper } = require('../../helper/helper')
 
 describe("uploadresult_helper", async() => {
 
+    before( async () => {
+    
+    const req = {
+        roll_no : 999,
+        name : "ABCD", 
+        age : 21,
+        dept : "QWER", 
+        email : "assdffds@gmail.com",
+        password : "121323wqeq",
+        result : "asdsadadasd",
+        verified : true
+    }
+
+        await student.create(req)
+    })
+
+    after( async () => {
+        await student.destroy({where : {dept : "QWER"}})
+    })
+
     afterEach(() => {
         sinon.restore()
     })
@@ -15,17 +35,14 @@ describe("uploadresult_helper", async() => {
         
         const req = {
             body: {
-                rollno : 1
-            }
+                roll_no : 999,
+                path : "1221qweweqwe"
+            }  
         }
 
         const res = {
             json : sinon.stub()
         }
-
-        sinon.stub(student, "findOne").resolves({rollno : 1})
-
-        sinon.stub(student, "update").resolves(true)
 
         await uploadresult_helper(req, res)
 
@@ -39,7 +56,8 @@ describe("uploadresult_helper", async() => {
         
         const req = {
             body: {
-                rollno : 1
+                roll_no : 999,
+                path : "1221qweweqwe"
             }
         }
 

@@ -8,6 +8,10 @@ const { register_helper } = require('../../helper/helper')
 
 describe("register_helper", async() => {
 
+    after( async () => {
+        await student.destroy({where : {dept : "QWER"}})
+    })
+
     afterEach(() => {
         sinon.restore()
     })
@@ -16,11 +20,11 @@ describe("register_helper", async() => {
         
         const req = {
             body: {
-                name: "Mugesh",
-                age: 21,
-                dept: "CSE",
-                email: "mugesh.s@rently.com",
-                password: "ABCD1234!"
+                name : "ABCD", 
+                age : 21,
+                dept : "QWER", 
+                email : "assdffds@gmail.com",
+                password : "121323wqeq",
             }
         }
 
@@ -30,11 +34,7 @@ describe("register_helper", async() => {
 
         const next = sinon.stub()
 
-        sinon.stub(student, "findOne").resolves(null)
-
         sinon.stub(bcrypt, "hash").resolves("HashPass")
-
-        sinon.stub(student, "create").resolves(true)
 
         await register_helper(req, res, next)
 
@@ -45,11 +45,11 @@ describe("register_helper", async() => {
         
         const req = {
             body: {
-                name: "Mugesh",
-                age: 21,
-                dept: "CSE",
-                email: "mugesh.s@rently.com",
-                password: "ABCD1234!"
+                name : "ABCD", 
+                age : 21,
+                dept : "QWER", 
+                email : "assdffds@gmail.com",
+                password : "121323wqeq",
             }
         }
 
@@ -58,8 +58,6 @@ describe("register_helper", async() => {
         }
 
         const next = sinon.stub()
-
-        sinon.stub(student, "findOne").resolves({email : "mugesh.s@rently.com"})
 
         await register_helper(req, res, next)
 

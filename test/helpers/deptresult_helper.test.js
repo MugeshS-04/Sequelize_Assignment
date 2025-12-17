@@ -7,6 +7,25 @@ const { deptresult_helper } = require('../../helper/helper')
 
 describe("uploadresult_helper", async() => {
 
+    before( async () => {
+
+        const req = {
+            roll_no : 999,
+            name : "ABCD", 
+            age : 21,
+            dept : "QWER", 
+            email : "assdffds@gmail.com", 
+            password : "121323wqeq",
+            result : "asdsadadasd"
+        }
+
+        await student.create(req)
+    })
+
+    after( async () => {
+        await student.destroy({where : {dept : "QWER"}})
+    })
+
     afterEach(() => {
         sinon.restore()
     })
@@ -15,7 +34,7 @@ describe("uploadresult_helper", async() => {
         
         const req = {
             body: {
-                dept : "CSE"
+                dept : "QWER"
             }
         }
 
@@ -23,12 +42,15 @@ describe("uploadresult_helper", async() => {
             json : sinon.stub()
         }
 
-        sinon.stub(student, "findAll").resolves([{roll_no : 1, name : "mugesh", dept : "CSE", result : "asdsfa.txt"}])
-
         await deptresult_helper(req, res)
 
         expect(res.json.firstCall.args[0]).to.deep.equal([
-            {roll_no : 1, name : "mugesh", dept : "CSE", result : "asdsfa.txt"}
+            {
+            roll_no : 999,
+            name : "ABCD", 
+            dept : "QWER",  
+            result : "asdsadadasd"
+            }
         ])
     })
 })

@@ -1,11 +1,51 @@
-const { DataTypes } = require("sequelize")
-const { sequelize } = require("./db")
+const fs = require('fs');
+const path = require('path');
+const { Sequelize } = require("sequelize")
 
-const studentModel = require("./student")
+const basename = path.basename(__filename)
 
-const student = studentModel(sequelize, DataTypes)
+console.log(__filename)
 
-module.exports = {
-  sequelize,
-  student
+const config = require('../config/config.cjs')
+
+const db = {}
+
+const sequelize = new Sequelize(config.development)
+
+const connectDB = async () => {
+  try{
+    await sequelize.authenticate()
+    console.log("DB Connected successfully!")
+  }
+  catch(error)
+  {
+    console.log("Failed to connect to DB")
+  }
 }
+
+fs.readdirSync(__dirname).filter(file => {
+  if(
+    file.indexOf('.') !== 0 &&
+    file !== basename &&
+    file.slice(-3) === '.js' &&
+    file.indexOf('.test.js') === -1
+  ) return file
+
+}).forEach(file => {
+
+  const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+  db[model.name] = model;
+
+})
+
+db.sequelize = sequelize
+db.connectDB = connectDB
+
+Object.keys(db).forEach(modelName => {
+  if(db[modelName].associate)
+  {
+    db[modelName].associate(db)
+  }
+})
+
+module.exports = db

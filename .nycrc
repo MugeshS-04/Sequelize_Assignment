@@ -9,8 +9,12 @@
   "exclude": [
     "server.js",
     "app.js",
-    "db/**",
-    "node_modules"
+    "models/db.js",
+    "helper/mail.js",
+    "helper/bull.js",
+    "helper/file_upload.js",
+    "helper/token.js",
+    "node_modules/**"
   ],
   "reporter": ["text", "html"],
   "report-dir": "./coverage"

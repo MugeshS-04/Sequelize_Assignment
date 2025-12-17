@@ -6,6 +6,28 @@ const { student } = require('../../models/index.js')
 const { update_helper } = require('../../helper/helper.js')
 
 describe("update_helper", () => {
+
+  before( async () => {
+
+    const req = {
+      roll_no : 999,
+      name : "ABCD", 
+      age : 21,
+      dept : "QWER", 
+      email : "assdffds@gmail.com",
+      password : "121323wqeq",
+      result : "asdsadadasd",
+      verified : true
+    }
+
+    await student.create(req)
+    
+  })
+
+  after( async () => {
+    await student.destroy({where : {dept : "QWER"}})
+  })
+
   afterEach(() => {
     sinon.restore()
   })
@@ -14,22 +36,19 @@ describe("update_helper", () => {
 
     const req = {
         user : {
-            key : "mugesh.s@rently.com"
+            key : "assdffds@gmail.com"
         },
         body : {
-            name : "mugesh",
-            email : "mugesh.s@rently.com",
+            name : "ABCDEFG", 
             age : 21,
-            dept : "CSE",
-            email : "mugesh.s@rently.com"
+            dept : "QWER", 
+            email : "assdffds@gmail.com"
         }
     }
 
     const res = {
         json : sinon.stub()
     }
-
-    sinon.stub(student, "update").resolves(1)
 
     await update_helper(req, res)
 
@@ -45,20 +64,19 @@ describe("update_helper", () => {
   it("should return update not successfull!", async () => {
 
     const req = {
-        user : {
-            key : "mugesh.s@rently.com"
-        },
-        body : {
-            name : "mugesh",
-            email : "mugesh.s@rently.com",
-            age : 21,
-            dept : "CSE",
-            email : "mugesh.s@rently.com"
-        }
+      user : {
+          key : "assdffds@gmail.com"
+      },
+      body : {
+          name : "ABCDEFG", 
+          age : 21,
+          dept : "QWER", 
+          email : "assdffds@gmail.com"
+      }
     }
 
     const res = {
-        json : sinon.stub()
+      json : sinon.stub()
     }
 
     sinon.stub(student, "update").resolves(0)

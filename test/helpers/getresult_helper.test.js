@@ -7,6 +7,25 @@ const expect = chai.expect
 
 describe("getresult_helper", () => {
 
+  before( async () => {
+
+    const req = {
+      roll_no : 999,
+      name : "ABCD", 
+      age : 21,
+      dept : "QWER", 
+      email : "assdffds@gmail.com",
+      password : "121323wqeq",
+      result : "asdsadadasd"
+    }
+
+    await student.create(req)
+  })
+
+  after( async () => {
+    await student.destroy({where : {dept : "QWER"}})
+  })
+
   afterEach(() => {
     sinon.restore()
   })
@@ -15,7 +34,7 @@ describe("getresult_helper", () => {
 
     const req = {
       user: {
-        key: "mugesh.s@rently.com"
+        key: "assdffds@gmail.com"
       }
     }
 
@@ -23,16 +42,12 @@ describe("getresult_helper", () => {
       json: sinon.stub()
     }
 
-    sinon.stub(student, "findOne").resolves({
-      result : "asdsdasda.sdsadad"
-    })
-
     await getresult_helper(req, res)
 
     expect(res.json.calledOnce).to.be.true
 
     expect(res.json.firstCall.args[0]).to.deep.equal({
-      result : "asdsdasda.sdsadad"
+      result : "asdsadadasd"
     })
   })
 
@@ -40,7 +55,7 @@ describe("getresult_helper", () => {
 
     const req = {
       user: {
-        key: "unknown@gmail.com"
+        key: "assdffds@gmail.com"
       }
     }
 
@@ -65,10 +80,7 @@ describe("getresult_helper", () => {
   
     const req = {
         user : {
-            key : "mugesh.s@rently.com"
-        },
-        body : {
-            email : "mugesh.s@rently.com",
+            key : "assdffds@gmail.com"
         }
     }
 
@@ -85,5 +97,6 @@ describe("getresult_helper", () => {
     expect(res.json.firstCall.args[0]).to.deep.equals({
         success : false, message : "Email doesn't exist!"
     })
+    
    })
 })

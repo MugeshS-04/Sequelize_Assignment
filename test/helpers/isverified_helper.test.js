@@ -8,6 +8,26 @@ const expect = chai.expect
 
 describe("isverified_helper", () => {
 
+  before( async () => {
+
+    const req = {
+      roll_no : 999,
+      name : "ABCD", 
+      age : 21,
+      dept : "QWER", 
+      email : "assdffds@gmail.com",
+      password : "121323wqeq",
+      result : "asdsadadasd",
+      verified : true
+    }
+
+    await student.create(req)
+  })
+
+  after( async () => {
+    await student.destroy({where : {dept : "QWER"}})
+  })
+
   afterEach(() => {
     sinon.restore()
   })
@@ -16,7 +36,7 @@ describe("isverified_helper", () => {
 
     const req = {
       user: {
-        key: "mugesh.s@rently.com"
+        key: "assdffds@gmail.com"
       }
     }
 
@@ -25,11 +45,6 @@ describe("isverified_helper", () => {
     }
 
     const next = sinon.stub()
-
-    sinon.stub(student, "findOne").resolves({
-      email : "mugesh.s@rently.com",
-      verified : true
-    })
 
     await isverified_helper(req, res, next)
 
@@ -40,7 +55,7 @@ describe("isverified_helper", () => {
 
     const req = {
       user: {
-        key: "mugesh.s@rently.com"
+        key: "assdffds@gmail.com"
       }
     }
 
@@ -51,7 +66,6 @@ describe("isverified_helper", () => {
     const next = sinon.stub()
 
     sinon.stub(student, "findOne").resolves({
-      email : "mugesh.s@rently.com",
       verified : false
     })
 
