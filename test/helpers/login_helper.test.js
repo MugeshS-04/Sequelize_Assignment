@@ -1,5 +1,5 @@
 const sinon = require('sinon')
-const { student } = require('../../models/index')
+const db = require('../../models/index')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { login_helper } = require('../../helper/helper')
@@ -20,11 +20,11 @@ describe("login_helper", () => {
         verified : true
     }
 
-    await student.create(req)
+    await db.student.create(req)
     })
 
     after( async () => {
-    await student.destroy({where : {dept : "QWER"}})
+    await db.student.destroy({where : {dept : "QWER"}})
     })
 
     afterEach(() => sinon.restore())
@@ -94,7 +94,7 @@ describe("login_helper", () => {
             json : sinon.stub()
         }
         
-        sinon.stub(student, "findOne").resolves(null)
+        sinon.stub(db.student, "findOne").resolves(null)
 
         await login_helper(req, res)
         

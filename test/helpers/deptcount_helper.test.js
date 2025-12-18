@@ -2,7 +2,7 @@ const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
 
-const { student } = require('../../models/index.js')
+const db = require('../../models/index.js')
 const { deptcount_helper } = require('../../helper/helper')
 
 
@@ -18,11 +18,11 @@ describe("department count", () => {
             password : "121323wqeq"
         }
 
-        await student.create(req)
+        await db.student.create(req)
     })
 
     after( async () => {
-        await student.destroy({where : {dept : "QWER"}})
+        await db.student.destroy({where : {dept : "QWER"}})
     })
 
     afterEach(() => sinon.restore())
@@ -61,7 +61,7 @@ describe("department count", () => {
             json : sinon.stub()
         }
 
-        sinon.stub(student, "count").resolves(0)
+        sinon.stub(db.student, "count").resolves(0)
         
         await deptcount_helper(req, res)
 

@@ -2,7 +2,7 @@ const sinon =  require("sinon")
 const chai = require('chai')
 
 const { isverified_helper } = require("../../helper/helper.js")
-const { student } = require('../../models/index.js')
+const db = require('../../models/index.js')
 
 const expect = chai.expect
 
@@ -21,11 +21,11 @@ describe("isverified_helper", () => {
       verified : true
     }
 
-    await student.create(req)
+    await db.student.create(req)
   })
 
   after( async () => {
-    await student.destroy({where : {dept : "QWER"}})
+    await db.student.destroy({where : {dept : "QWER"}})
   })
 
   afterEach(() => {
@@ -56,6 +56,9 @@ describe("isverified_helper", () => {
     const req = {
       user: {
         key: "assdffds@gmail.com"
+      },
+      body: {
+        email: "assdffds@gmail.com"
       }
     }
 
@@ -65,7 +68,7 @@ describe("isverified_helper", () => {
 
     const next = sinon.stub()
 
-    sinon.stub(student, "findOne").resolves({
+    sinon.stub(db.student, "findOne").resolves({
       verified : false
     })
 

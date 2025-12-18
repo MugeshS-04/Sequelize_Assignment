@@ -4,24 +4,11 @@ const { Sequelize } = require("sequelize")
 
 const basename = path.basename(__filename)
 
-console.log(__filename)
-
 const config = require('../config/config.cjs')
 
 const db = {}
 
 const sequelize = new Sequelize(config.development)
-
-const connectDB = async () => {
-  try{
-    await sequelize.authenticate()
-    console.log("DB Connected successfully!")
-  }
-  catch(error)
-  {
-    console.log("Failed to connect to DB")
-  }
-}
 
 fs.readdirSync(__dirname).filter(file => {
   if(
@@ -37,6 +24,17 @@ fs.readdirSync(__dirname).filter(file => {
   db[model.name] = model;
 
 })
+
+const connectDB = async () => {
+  try{
+    await sequelize.authenticate()
+    console.log("DB Connected successfully!")
+  }
+  catch(error)
+  {
+    console.log("Failed to connect to DB")
+  }
+}
 
 db.sequelize = sequelize
 db.connectDB = connectDB

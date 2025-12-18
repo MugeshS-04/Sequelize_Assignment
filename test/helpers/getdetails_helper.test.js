@@ -1,7 +1,7 @@
 const sinon =  require("sinon")
 const chai = require('chai')
 const { getdetails_helper } = require("../../helper/helper.js")
-const { student } = require('../../models/index.js')
+const db = require('../../models/index.js')
 
 const expect = chai.expect
 
@@ -19,11 +19,11 @@ describe("getdetails_helper", () => {
             result : "asdsadadasd"
         }
 
-        await student.create(req)
+        await db.student.create(req)
     })
 
     after( async () => {
-        await student.destroy({where : {dept : "QWER"}})
+        await db.student.destroy({where : {dept : "QWER"}})
     })
 
   afterEach(() => {
@@ -67,7 +67,7 @@ describe("getdetails_helper", () => {
       json: sinon.stub()
     }
 
-    sinon.stub(student, "findOne").resolves(null)
+    sinon.stub(db.student, "findOne").resolves(null)
 
     await getdetails_helper(req, res)
 

@@ -17,7 +17,7 @@ const register_helper = async (req, res, next) => {
     {
         const hashpass = await bcrypt.hash(password, 10)
         await student.create({ name : name, age : age, dept : dept, email : email, password : hashpass })
-        return next()
+        next()
         //return res.json({success : true, message : "Registration Successfull!, Verfiy your account using the link received from the email" })
     }
 }
@@ -207,7 +207,7 @@ const isverified_helper = async (req, res, next) => {
 
     const key = req?.user?.key
 
-    const email = key
+    const email = key || req.body.email
 
     const result = await student.findOne({where : {email : email}})
 

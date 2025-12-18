@@ -1,7 +1,7 @@
 const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
-const { student } = require('../../models/index.js')
+const db = require('../../models/index.js')
 const { delete_helper } = require('../../helper/helper')
 
 describe("delete_helper", () => {
@@ -16,7 +16,7 @@ describe("delete_helper", () => {
             password : "121323wqeq"
         }
 
-        await student.create(req)
+        await db.student.create(req)
     })
 
     afterEach(() => {
@@ -35,7 +35,7 @@ describe("delete_helper", () => {
             json : sinon.stub()
         }
 
-        sinon.stub(student, "destroy").resolves(0)
+        sinon.stub(db.student, "destroy").resolves(0)
 
         await delete_helper(req, res)
 

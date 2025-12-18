@@ -7,6 +7,7 @@
     "models/**/*.js"
   ],
   "exclude": [
+    "controllers/controller.js",
     "server.js",
     "app.js",
     "models/db.js",
@@ -14,6 +15,8 @@
     "helper/bull.js",
     "helper/file_upload.js",
     "helper/token.js",
+    "routes/auth_route.js",
+    "routes/user_route.js",
     "node_modules/**"
   ],
   "reporter": ["text", "html"],

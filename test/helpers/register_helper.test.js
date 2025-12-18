@@ -3,13 +3,13 @@ const chai = require('chai')
 const bcrypt = require('bcrypt')
 
 const expect = chai.expect
-const { student } = require('../../models/index.js')
+const db = require('../../models/index.js')
 const { register_helper } = require('../../helper/helper')
 
 describe("register_helper", async() => {
 
     after( async () => {
-        await student.destroy({where : {dept : "QWER"}})
+        await db.student.destroy({where : {dept : "QWER"}})
     })
 
     afterEach(() => {
